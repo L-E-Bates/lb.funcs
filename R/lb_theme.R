@@ -58,6 +58,7 @@ lb_theme <- function(base_size=11, base_family = "", base_line_size=base_size/22
         panel.grid.major.x = ggplot2::element_blank(),
         panel.grid.minor = ggplot2::element_line(size = ggplot2::rel(0.5)),
         panel.grid.minor.y = ggplot2::element_blank(),
+        panel.grid.minor.x = ggplot2::element_blank(),
         panel.spacing = ggplot2::unit(base_size/2, "pt"),
         panel.spacing.x = NULL, panel.spacing.y = NULL,
         panel.ontop = FALSE,

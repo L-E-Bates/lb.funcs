@@ -4,7 +4,13 @@
 \alias{geom_ideogram}
 \title{Pull and organise chromosome ideogram data from HGSC}
 \usage{
-geom_ideogram(chromosome, genome = "hg38", Y_offset = 0, height = 1)
+geom_ideogram(
+  chromosome,
+  genome = "hg38",
+  Y_offset = 0,
+  height = 1,
+  label = FALSE
+)
 }
 \arguments{
 \item{chromosome}{Chromosome to display by number. Typically autosomes are listed first in numerical order, then non-homologous chromosomes.}

@@ -8,15 +8,15 @@
 #' @export
 #'
 
-geom_ideogram <- function(chromosome, genome="hg38", Y_offset=0, height=1){
+geom_ideogram <- function(chromosome, genome="hg38", Y_offset=0, height=1, label=FALSE){
   chromosome_data <- generate_drawing_data(genome=genome)
-  chrs=stringr::str_sort(unique(chromosome_data$arms$Chromosome), numeric = TRUE)
-  list(
+  chrs=stringr::str_sort(unique(chromosome_data$arms$Chr_name), numeric = TRUE)
+  layer_list <- list(
     ggplot2::layer(
       geom = "rect",
       mapping = ggplot2::aes(xmin=Start,xmax=End,ymin=Y_offset-(height/2), ymax=Y_offset+(height/2)),
-      data = chromosome_data$arms[chromosome_data$arms$Chromosome==chrs[chromosome],],
-      params = list(fill=chromosome_data$arms[chromosome_data$arms$Chromosome==chrs[chromosome],]$Color),
+      data = chromosome_data$arms[chromosome_data$arms$Chromosome %in% chromosome,],
+      params = list(fill=chromosome_data$arms[chromosome_data$arms$Chromosome %in% chromosome,]$Color),
       stat = "identity",
       position = "identity",
       show.legend = FALSE,
@@ -24,8 +24,8 @@ geom_ideogram <- function(chromosome, genome="hg38", Y_offset=0, height=1){
     ggplot2::layer(
       geom = "polygon",
       mapping = ggplot2::aes(X,Y_offset - Y * (height / 2)),
-      data=chromosome_data$centromeres[chromosome_data$centromeres$Chromosome==chrs[chromosome],],
-      params=list(fill=chromosome_data$centromeres[chromosome_data$centromeres$Chromosome==chrs[chromosome],]$Color),
+      data=chromosome_data$centromeres[chromosome_data$centromeres$Chromosome %in% chromosome,],
+      params=list(fill=chromosome_data$centromeres[chromosome_data$centromeres$Chromosome %in% chromosome,]$Color),
       stat = "identity",
       position = "identity",
       show.legend = FALSE,
@@ -33,13 +33,26 @@ geom_ideogram <- function(chromosome, genome="hg38", Y_offset=0, height=1){
     ggplot2::layer(
       geom = "path",
       mapping = ggplot2::aes(X,Y_offset - Y * (height / 2)),
-      data = chromosome_data$outlines[chromosome_data$outlines$Chromosome==chrs[chromosome],],
+      data = chromosome_data$outlines[chromosome_data$outlines$Chromosome %in% chromosome,],
       params = list(color="black"),
       stat = "identity",
       position = "identity",
       show.legend = FALSE,
       inherit.aes = FALSE)
   )
+  if (label){
+    layer_list <- append(layer_list, ggplot2::layer(
+      geom = "text",
+      mapping = ggplot2::aes(x=0, y=Y_offset, label=label),
+      data = data.frame(Chromosome=chromosome, label=chrs[chromosome]),
+      params = list(angle=90, hjust=0.5, vjust=0),
+      stat = "identity",
+      position = "identity",
+      show.legend = FALSE,
+      inherit.aes = FALSE)
+    )
+  }
+  return(layer_list)
 }
 
 get_ideo_data <- function(genome="hg38", strip=TRUE){
@@ -62,6 +75,8 @@ get_ideo_data <- function(genome="hg38", strip=TRUE){
       cyto <- cyto[cyto$Chromosome != chr,]
     }
   }
+  cyto$Chr_name <- cyto$Chromosome
+  cyto$Chromosome <- match(cyto$Chr_name, stringr::str_sort(unique(cyto$Chr_name), numeric = TRUE))
 
   return(cyto)
 }
@@ -86,9 +101,4 @@ generate_drawing_data <- function(genome="hg38"){
   chromosome_outlines <- stats::na.omit(chromosome_outlines)
   return(list(arms=cyto[cyto$Type != "acen",], centromeres=centromeres, outlines=chromosome_outlines))
 }
-
-
-
-
-
 

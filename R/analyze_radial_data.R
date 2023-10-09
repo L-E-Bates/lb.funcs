@@ -19,13 +19,13 @@ analyze_radial_data <- function(input_file, DNA_channel="DNA"){
 
   data_bg_subtracted <- relevant_data
   for (target in unique(data_bg_subtracted)){
-    for (sample in 1:nsample){
+    for (sample in 1:nsamples){
       data_bg_subtracted[data_bg_subtracted$target == target, sample] <- data_bg_subtracted[data_bg_subtracted$target==target, sample] - data_bg_subtracted[data_bg_subtracted$target==target & data_bg_subtracted$position==max_position, sample]
     }
   }
 
   data_normalized <- data_bg_subtracted[data_bg_subtracted$position < (max_position-1),]
-  for (sample in 1:nsample){
+  for (sample in 1:nsamples){
     for (position in 1:(max_position-2)){
       data_normalized[data_normalized$position==position, sample] <- data_normalized[data_normalized$position==position, sample] / data_normalized[data_normalized$position==position & data_normalized$target==DNA_channel, sample]
     }

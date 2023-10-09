@@ -14,7 +14,7 @@ analyze_radial_data <- function(input_file, DNA_channel="DNA"){
   relevant_data$target <- stringr::str_extract(rownames(relevant_data), "(?<=MeanFrac_)[[:alnum:]]+")
   relevant_data$position <- as.numeric(stringr::str_extract(rownames(relevant_data), "(?<=_)[[:digit:]]+(?=of)"))
 
-  max_position <- stringr::str_extract(rownames(relevant_data)[1], "(?<=of)[[:digit:]]+")
+  max_position <- as.numeric(stringr::str_extract(rownames(relevant_data)[1], "(?<=of)[[:digit:]]+"))
   ##data_long <- pivot_longer
 
   data_bg_subtracted <- relevant_data

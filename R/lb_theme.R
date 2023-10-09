@@ -4,6 +4,7 @@
 #' @param base_family Font family to use.
 #' @param base_line_size Defaults to base_size / 22.
 #' @param base_rect_size Defaults to base_size / 22.
+#' @param dark_mode Switch to dark mode (black background, white lines and text).
 #'
 #' @export
 #'

@@ -8,7 +8,8 @@ lb_theme(
   base_size = 11,
   base_family = "",
   base_line_size = base_size/22,
-  base_rect_size = base_size/22
+  base_rect_size = base_size/22,
+  dark_mode = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ lb_theme(
 \item{base_line_size}{Defaults to base_size / 22.}
 
 \item{base_rect_size}{Defaults to base_size / 22.}
+
+\item{dark_mode}{Switch to dark mode (black background, white lines and text).}
 }
 \description{
 Basic theme for ggplots

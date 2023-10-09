@@ -18,7 +18,7 @@ analyze_radial_data <- function(input_file, DNA_channel="DNA"){
   ##data_long <- pivot_longer
 
   data_bg_subtracted <- relevant_data
-  for (target in unique(data_bg_subtracted)){
+  for (target in unique(data_bg_subtracted$target)){
     for (sample in 1:nsamples){
       data_bg_subtracted[data_bg_subtracted$target == target, sample] <- data_bg_subtracted[data_bg_subtracted$target==target, sample] - data_bg_subtracted[data_bg_subtracted$target==target & data_bg_subtracted$position==max_position, sample]
     }
